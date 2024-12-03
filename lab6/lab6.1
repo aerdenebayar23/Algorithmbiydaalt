@@ -1,0 +1,37 @@
+class Solution:
+    def numTrees(self, n: int) -> int:
+        self.table = [-1] * (n + 1)
+        self.table[0] = 1
+        return self.numTreesRec(n)
+        
+    def numTreesRec(self, n):
+        if self.table[n] != -1:
+            return self.table[n]
+        
+        total = 0
+        for m in range(n):
+            total += self.numTreesRec(m) * self.numTreesRec(n - 1 - m)
+        
+        self.table[n] = total
+        return total
+
+    def optimalSearchTree(self, keys, freq):
+        n = len(keys)
+        
+        dp = [[0] * n for _ in range(n)]
+        
+        for i in range(n):
+            dp[i][i] = freq[i]
+      
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                j = i + length - 1
+                dp[i][j] = float('inf')
+                for r in range(i, j + 1):
+                    cost = (dp[i][r - 1] if r > i else 0) + \
+                           (dp[r + 1][j] if r < j else 0) + \
+                           sum(freq[i:j + 1])
+                    
+                    dp[i][j] = min(dp[i][j], cost)
+        
+        return dp[0][n - 1]
