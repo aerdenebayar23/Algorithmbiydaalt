@@ -1,0 +1,32 @@
+import unittest
+def fibonacci_tabulation(n):
+    if n <= 1:
+        return n
+    table = [0] * (n + 1)
+    table[1] = 1
+    for i in range(2, n + 1):
+        table[i] = table[i - 1] + table[i - 2]
+    return table[n]
+class TestFibonacciTabulation(unittest.TestCase):
+
+    def test_fibonacci_zero(self):
+        self.assertEqual(fibonacci_tabulation(0), 0)
+
+    def test_fibonacci_one(self):
+        self.assertEqual(fibonacci_tabulation(1), 1)
+
+    def test_fibonacci_small_numbers(self):
+        self.assertEqual(fibonacci_tabulation(2), 1)
+        self.assertEqual(fibonacci_tabulation(3), 2)
+        self.assertEqual(fibonacci_tabulation(4), 3)
+
+    def test_fibonacci_larger_numbers(self):
+        self.assertEqual(fibonacci_tabulation(10), 55)
+        self.assertEqual(fibonacci_tabulation(15), 610)
+        self.assertEqual(fibonacci_tabulation(20), 6765)
+
+    def test_fibonacci_edge_case(self):
+        self.assertEqual(fibonacci_tabulation(30), 832040)
+
+if __name__ == '__main__':
+    unittest.main(argv=[''], exit=False)
