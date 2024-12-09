@@ -1,0 +1,47 @@
+import unittest
+
+def assign_bikes(students, bikes):
+    distances = []
+    for i, (sx, sy) in enumerate(students):
+        for j, (bx, by) in enumerate(bikes):
+            distance = abs(sx - bx) + abs(sy - by)
+            distances.append((distance, i, j))
+
+    distances.sort()
+
+    assigned_students = set()
+    assigned_bikes = set()
+    result = [-1] * len(students)
+    for distance, student, bike in distances:
+        if student not in assigned_students and bike not in assigned_bikes:
+            result[student] = bike
+            assigned_students.add(student)
+            assigned_bikes.add(bike)
+            if len(assigned_students) == len(students):
+                break
+
+    return result
+
+class TestAssignBikes(unittest.TestCase):
+    def test_example(self):
+        students = [(0, 0), (1, 1)]
+        bikes = [(0, 1), (4, 3), (2, 1)]
+        self.assertEqual(assign_bikes(students, bikes), [0, 2])
+
+    def test_tie_breaking(self):
+        students = [(0, 0), (0, 1)]
+        bikes = [(1, 0), (1, 1)]
+        self.assertEqual(assign_bikes(students, bikes), [0, 1])
+
+    def test_more_bikes_than_students(self):
+        students = [(0, 0)]
+        bikes = [(1, 1), (2, 2), (3, 3)]
+        self.assertEqual(assign_bikes(students, bikes), [0])
+
+    def test_more_students_than_bikes(self):
+        students = [(0, 0), (1, 1), (2, 2)]
+        bikes = [(0, 1), (1, 0)]
+        self.assertEqual(assign_bikes(students, bikes), [0, 1, -1])
+
+if __name__ == "__main__":
+    unittest.main(argv=[''], exit=False)
