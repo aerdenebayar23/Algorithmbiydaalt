@@ -1,0 +1,19 @@
+class Solution:
+    def DFS(self, s, index, count):
+        if count < 0:
+            return False
+        
+        if index < len(s):
+            if s[index] == '(':
+                return self.DFS(s, index + 1, count + 1)
+            elif s[index] == ')':
+                return self.DFS(s, index + 1, count - 1)
+            else:
+                return (self.DFS(s, index + 1, count + 1) or
+                        self.DFS(s, index + 1, count - 1) or
+                        self.DFS(s, index + 1, count))
+        else:
+            return count == 0
+    
+    def checkValidString(self, s):
+        return self.DFS(s, 0, 0)
