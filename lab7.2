@@ -1,0 +1,47 @@
+import java.util.*;
+
+public class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        Map<Character, Integer> frequencies = new HashMap<>();
+        for (char t : tasks) {
+            frequencies.put(t, frequencies.getOrDefault(t, 0) + 1);
+        }
+        
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        maxHeap.addAll(frequencies.values());
+        
+        int intervals = 0;
+
+        while (!maxHeap.isEmpty()) {
+            List<Integer> tempList = new ArrayList<>();
+            int cycle = 0;
+            
+            for (int i = 0; i <= n; i++) {
+                if (!maxHeap.isEmpty()) {
+                    tempList.add(maxHeap.poll());
+                    cycle++;
+                }
+            }
+            
+            for (int freq : tempList) {
+                if (freq - 1 > 0) {
+                    maxHeap.offer(freq - 1);
+                }
+            }
+            
+            intervals += maxHeap.isEmpty() ? cycle : n + 1;
+        }
+
+        return intervals;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        char[] tasks = {'A', 'A', 'A', 'B', 'B', 'B'};
+        int n = 2;
+
+        int result = solution.leastInterval(tasks, n);
+        System.out.println("Least Interval: " + result);
+    }
+}
