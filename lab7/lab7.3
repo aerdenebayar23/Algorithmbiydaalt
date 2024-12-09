@@ -1,0 +1,17 @@
+void decode_huff(node* root, string s) {
+    node* current = root;
+    string decoded = "";
+    for (char c : s) {
+        if (c == '0') {
+            current = current->left;
+        } else if (c == '1') {
+            current = current->right;
+        }
+
+        if (current->left == NULL && current->right == NULL) {
+            decoded += current->data;  // Add the character to the decoded string
+            current = root;            // Reset to root for the next character
+        }
+    }
+
+    cout << decoded << endl;
