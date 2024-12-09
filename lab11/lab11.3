@@ -1,0 +1,36 @@
+class Solution:
+    def openLock(self, deadends, target):
+        qu = deque(["0000"])
+        ans = 0
+        ded = set(deadends)
+        vis = set(["0000"])
+
+        while qu:
+            n = len(qu)
+
+            for _ in range(n):
+                s = qu.popleft()
+                if s in ded:
+                    continue
+                if s == target:
+                    return ans
+
+                for i in range(len(s)):
+                    num = int(s[i])
+                    s1 = s[:i] + str((num + 1) % 10) + s[i+1:]
+                    s2 = s[:i] + ('9' if num == 0 else str(num - 1)) + s[i+1:]
+
+                    if s1 == target or s2 == target:
+                        return ans + 1
+
+                    if s1 not in vis and s1 not in ded:
+                        vis.add(s1)
+                        qu.append(s1)
+
+                    if s2 not in vis and s2 not in ded:
+                        vis.add(s2)
+                        qu.append(s2)
+
+            ans += 1
+
+        return -1
